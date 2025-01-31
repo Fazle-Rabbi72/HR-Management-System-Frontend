@@ -10,12 +10,16 @@ const Headers = () => {
     profile_image: "",
   });
 
+  const [role , setRole] = useState("");
+
   const navigate = useNavigate();
 
   // 🔹 Logged-in user এর API থেকে ডাটা ফেচ করা
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("token");
+      const role = localStorage.getItem("role");
+      setRole(role);
       if (!token) return;
 
       try {
@@ -72,17 +76,26 @@ const Headers = () => {
       </div>
 
       {/* Search Bar */}
+
+      {
+        role === "admin" ?(
+          <div className="relative w-full mt-4 md:mt-0 md:w-1/3">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <GoSearch className="text-gray-400" />
+            </span>
+            <input
+              type="text"
+              className="w-full py-2 pl-10 pr-4 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
+              placeholder="Search..."
+            />
+          </div>
+        ):(
+          <div className="relative w-full mt-4 md:mt-0 md:w-1/3"><h1 className="text-lg md:text-xl font-semibold text-gray-800">Employee Dashboard</h1></div>
+        )
+
+      }
       
-      <div className="relative w-full mt-4 md:mt-0 md:w-1/3">
-        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-          <GoSearch className="text-gray-400" />
-        </span>
-        <input
-          type="text"
-          className="w-full py-2 pl-10 pr-4 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
-          placeholder="Search..."
-        />
-      </div>
+      
 
       {/* Notifications and Profile */}
       <div className="flex items-center gap-4 mt-4 md:mt-0">
@@ -112,7 +125,7 @@ const Headers = () => {
             />
           )}
           {dropdownOpen && (
-            <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
+            <ul className="absolute right-0 mt-2 lg:w-48 w-24  bg-white border rounded-lg shadow-lg">
               <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Profile
               </li>

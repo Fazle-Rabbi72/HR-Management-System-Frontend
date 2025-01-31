@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   FaUsers,
   FaChartLine,
@@ -11,11 +11,47 @@ import {
 } from "react-icons/fa";
 import AttendanceDashboard from "../components/AttendanceDashboard";
 import EmployeeList from "../components/EmployeeList";
+
 const AdminDashboard = () => {
   const [tab, setTab] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [department_name, setDepartmentName] = useState("");
+  const [addProject, setAddProject] = useState({
+    name: "",
+    client: "",
+    department: "",
+    description: "",
+    price: "",
+    start_date: "",
+    end_date: "",
+    status: "Ongoing",
+  });
 
+  const [departments, setDepartments] = useState([]);
+  const [clients, setClients] = useState([]);
+  
+
+  useEffect(() => {
+    fetch("https://hr-management-system-liard.vercel.app/departments/")
+      .then((response) => response.json())
+      .then((data) => setDepartments(data));
+  }, []);
+
+  useEffect(() => {
+    fetch("https://hr-management-system-liard.vercel.app/project/clients/")
+      .then((response) => response.json())
+      .then((data) => setClients(data));
+  }, []);
+       
+  const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setAddProject((prevData) => ({ ...prevData, [name]: files[0] }));
+    } else {
+      setAddProject((prevData) => ({ ...prevData, [name]: value }));
+    }
+  };
 
   const handleAddDepartment = async () => {
     if (!department_name) {
@@ -24,18 +60,21 @@ const AdminDashboard = () => {
     }
 
     try {
-      const response = await fetch("https://hr-management-system-liard.vercel.app/departments/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: department_name }),
-      });
+      const response = await fetch(
+        "https://hr-management-system-liard.vercel.app/departments/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: department_name }),
+        }
+      );
 
       if (response.ok) {
         alert("Department added successfully!");
         setIsModalOpen(false);
-        setDepartmentName(""); // ইনপুট ফিল্ড খালি করা
+        setDepartmentName("");
       } else {
         alert("Failed to add department!");
       }
@@ -45,11 +84,45 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleAddProject = async () => {
+    if (!addProject.name) {
+      alert("Please enter project name");
+      return;
+    }
 
+    try {
+      const response = await fetch(
+        "https://hr-management-system-liard.vercel.app/project/projects/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(addProject),
+        }
+      );
 
-
-
-
+      if (response.ok) {
+        alert("Project added successfully!");
+        setIsModalOpen1(false);
+        setAddProject({
+          name: "",
+          client: "",
+          department: "",
+          description: "",
+          price: "",
+          start_date: "",
+          end_date: "",
+          status: "Ongoing",
+        });
+      } else {
+        alert("Failed to add project!");
+      }
+    } catch (error) {
+      console.error("Error adding project:", error);
+      alert("An error occurred. Please try again!");
+    }
+  };
 
   const stats = [
     {
@@ -127,19 +200,22 @@ const AdminDashboard = () => {
     },
   ];
 
-  console.log(tab);
-
   return (
     <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-100 min-h-screen">
       {/* Admin Dashboard Header */}
       <div className="flex flex-wrap items-center justify-between shadow-md p-4 md:p-6 rounded-lg">
         <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
         <div className="flex gap-4">
-          <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700  hover:cursor-pointer">
+          <button
+            onClick={() => setIsModalOpen1(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 hover:cursor-pointer"
+          >
             <FaPlus /> Add Project
           </button>
-          <button onClick={() => setIsModalOpen(true)}
-           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700  hover:cursor-pointer">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 hover:cursor-pointer"
+          >
             <FaPlus /> Add Department
           </button>
         </div>
@@ -151,7 +227,7 @@ const AdminDashboard = () => {
           <div
             key={index}
             onClick={() => setTab(stat.title)}
-            className="bg-white bg-opacity-80 p-6 shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl flex items-center gap-4  hover:cursor-pointer"
+            className="bg-white bg-opacity-80 p-6 shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl flex items-center gap-4 hover:cursor-pointer"
           >
             <div className="p-3 bg-indigo-100 rounded-full">{stat.icon}</div>
             <div>
@@ -168,7 +244,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* extra page */}
-      {tab == "" && (
+      {tab === "" && (
         <div>
           <div className="mt-10 bg-white p-6 shadow-lg rounded-xl">
             <AttendanceDashboard />
@@ -245,11 +321,11 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {tab == "Total Employee" && <EmployeeList />}
+      {tab === "Total Employee" && <EmployeeList />}
 
       {/* Add Department Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-xl font-semibold mb-4">Add Department</h2>
             <input
@@ -273,6 +349,191 @@ const AdminDashboard = () => {
                 Add
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Project Modal */}
+      {isModalOpen1 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl mx-4">
+            <h2 className="text-xl font-semibold mb-4">Add Project</h2>
+
+            {/* Project Form */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAddProject();
+              }}
+              className="space-y-4"
+            >
+              {/* Double Grid Layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Project Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter project name"
+                    name="name"
+                    value={addProject.name}
+                    onChange={handleChange} 
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  />
+                </div>
+
+                {/* Client */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Client
+                  </label>
+                  <select
+                    id="client"
+                    name="client"
+                    value={addProject.client}
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  >
+                    <option value="">Select a client</option>
+                    {clients.map((client) => (
+                      <option key={client.id} value={client.id}>
+                        {client.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Department */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Department
+                  </label>
+                  <select
+                    id="department"
+                    name="department"
+                    value={addProject.department}
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  >
+                    <option value="">Select a department</option>
+                    {departments.map((department) => (
+                      <option key={department.id} value={department.id}>
+                        {department.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Price */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    placeholder="Enter project price"
+                    value={addProject.price}
+                    onChange={(e) =>
+                      setAddProject({ ...addProject, price: e.target.value })
+                    }
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  />
+                </div>
+
+                {/* Start Date */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    value={addProject.start_date}
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  />
+                </div>
+
+                {/* End Date */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                    value={addProject.end_date}
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  />
+                </div>
+
+                {/* Status */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Status
+                  </label>
+                  <select
+                    value={addProject.status}
+                    id="status"
+                    name="status"
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                  >
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Completed">Completed</option>
+                    <option value="On Hold">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Description (Full Width) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  placeholder="Enter project description"
+                  name="description"
+                  id="description"
+                  value={addProject.description}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  rows="3"
+                  required
+                />
+              </div>
+
+              {/* Form Buttons */}
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen1(false)}
+                  className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                >
+                  Add Project
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

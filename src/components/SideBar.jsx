@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 const SideBar = () => {
   const [acitiveLink, setActiveLink] = useState(0);
+  const [hoverdItem, setHoverdItem] = useState(null);
   const handaleclick = (index) => {
     setActiveLink(index);
   };
@@ -51,6 +52,8 @@ const SideBar = () => {
               className={`font-medium rounded-md py-2 px-5 hover:bg-gray-100 hover:text-indigo-500 ${
                 acitiveLink === index ? "bg-indigo-100 text-indigo-500" : ""
               }`}
+              onMouseEnter={() => setHoverdItem(index)}
+              onMouseLeave={() => setHoverdItem(null)}
             >
               <Link
                 to={link.path}
@@ -62,6 +65,13 @@ const SideBar = () => {
                   {link.name}
                 </span>
               </Link>
+
+              {/* tooltip for hover item */}
+              {hoverdItem === index && (
+              <span className="absolute left-16 bg-gray-700 text-white text-xs px-2 py-1 rounded-md shadow-lg md:hidden">
+                {link.name}
+              </span>
+            )}
             </li>
           ))}
         </ul>
@@ -74,6 +84,8 @@ const SideBar = () => {
               className={`font-medium rounded-md py-2 px-5 hover:bg-gray-100 hover:text-indigo-500 ${
                 acitiveLink === index ? "bg-indigo-100 text-indigo-500" : ""
               }`}
+              onMouseEnter={() => setHoverdItem(index)}
+              onMouseLeave={() => setHoverdItem(null)}
             >
               <Link
                 to={link.path}
@@ -85,6 +97,13 @@ const SideBar = () => {
                   {link.name}
                 </span>
               </Link>
+
+              {/* tooltip for hover item */}
+              {hoverdItem === index && (
+              <span className="absolute left-16 bg-gray-700 text-white text-xs px-2 py-1 rounded-md shadow-lg md:hidden">
+                {link.name}
+              </span>
+            )}
             </li>
           ))}
         </ul>
