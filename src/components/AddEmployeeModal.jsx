@@ -20,7 +20,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     // Fetch departments from the API
-    fetch("http://127.0.0.1:8000/departments/")
+    fetch("https://hr-management-system-liard.vercel.app/departments/")
       .then((response) => response.json())
       .then((data) => setDepartments(data))
       .catch((error) => console.error("Error fetching departments:", error));
@@ -44,7 +44,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
     });
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/employees/", {
+      const response = await fetch("https://hr-management-system-liard.vercel.app/employees/", {
         method: "POST",
         body: formData,
       });

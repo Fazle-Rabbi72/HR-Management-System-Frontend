@@ -23,7 +23,7 @@ const EmployeeDashboard = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/attendance/attendance/",
+        "https://hr-management-system-liard.vercel.app/attendance/attendance/",
         {
           method: "POST",
           headers: {

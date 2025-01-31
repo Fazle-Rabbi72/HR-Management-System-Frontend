@@ -14,7 +14,7 @@ const AttendanceTable = ({ employeeId }) => {
     const fetchAttendance = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/attendance/attendance/by_employee/?employee_id=${localStorage.getItem("user_id")}`
+          `https://hr-management-system-liard.vercel.app/attendance/attendance/by_employee/?employee_id=${localStorage.getItem("user_id")}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch attendance data");
@@ -28,7 +28,7 @@ const AttendanceTable = ({ employeeId }) => {
 
     const fetchEmployee = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/employees/${localStorage.getItem("user_id")}/`);
+        const response = await fetch(`https://hr-management-system-liard.vercel.app/employees/${localStorage.getItem("user_id")}/`);
         if (!response.ok) {
           throw new Error("Failed to fetch employee data");
         }
@@ -160,7 +160,8 @@ const AttendanceTable = ({ employeeId }) => {
                   <td className="p-2 md:p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-white text-xs md:text-sm ${
-                        att.status === "Present" ? "bg-green-500" : "bg-red-500"
+                        att.status === "Present" ? "bg-green-500" :
+                        att.status === "Late" ? "bg-yellow-500" : "bg-red-500"
                       }`}
                     >
                       {att.status}

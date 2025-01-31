@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/login/",
+        "https://hr-management-system-liard.vercel.app/login/",
         loginData
       );
       const { token, user_id, username, role } = response.data;
@@ -117,6 +117,11 @@ const Login = () => {
                 {loading ? "Logging in..." : "Login"}
               </button>
             </div>
+            <p>Username:admin,
+              password:123,
+              username:fazle_rabbi,
+              password:fazle1234,
+            </p>
           </form>
         </div>
       </div>

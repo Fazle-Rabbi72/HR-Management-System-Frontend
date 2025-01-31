@@ -11,22 +11,21 @@ const SideBar = () => {
     setActiveLink(index);
   };
   const SIDEBAR_LINKS = [
-    { id: 1, path: "/", name: "Dashboard", icon: <LuBox /> },
-    { id: 2, path: "/employees", name: "Employees", icon: <LuUsers /> },
-    { id: 3, path: "/managers", name: "Managers", icon: <TbUsers /> },
-    { id: 4, path: "/leaves", name: "Leaves", icon: <LuMessageSquare /> },
-    { id: 5, path: "/tasks", name: "Tasks", icon: <LuTrello /> },
-    { id: 5, path: "/tasks", name: "Departments", icon: <LuTrello /> },
-    { id: 5, path: "/tasks", name: "Payroll", icon: <FaMoneyBill /> },
-    { id: 6, path: "/calendar", name: "Calendar", icon: <LuCalendar /> },
+    { id: 1, path: "/dashboard", name: "Dashboard", icon: <LuBox /> },
+    { id: 2, path: "", name: "Employees", icon: <LuUsers /> },
+    { id: 3, path: "", name: "Leaves", icon: <LuMessageSquare /> },
+    { id: 5, path: "", name: "Tasks", icon: <LuTrello /> },
+    { id: 5, path: "", name: "Departments", icon: <LuTrello /> },
+    { id: 5, path: "", name: "Payroll", icon: <FaMoneyBill /> },
+    { id: 6, path: "", name: "Calendar", icon: <LuCalendar /> },
   ];
   const SIDEBAR_EMPLOYEE_LINKS = [
     { id: 1, path: "/dashboard/employee-dashboard", name: "Dashboard", icon: <LuBox /> },
-    { id: 2, path: "/employees", name: "Employees", icon: <LuUsers /> },
-    { id: 4, path: "/leaves", name: "Leaves", icon: <LuMessageSquare /> },
-    { id: 5, path: "/tasks", name: "Tasks", icon: <FaSuitcase /> },
-    { id: 5, path: "/tasks", name: "Salary", icon: <FaMoneyBill /> },
-    { id: 6, path: "/calendar", name: "Calendar", icon: <LuCalendar /> },
+    { id: 2, path: "", name: "Employees", icon: <LuUsers /> },
+    { id: 4, path: "", name: "Leaves", icon: <LuMessageSquare /> },
+    { id: 5, path: "", name: "Tasks", icon: <FaSuitcase /> },
+    { id: 5, path: "", name: "Salary", icon: <FaMoneyBill /> },
+    { id: 6, path: "", name: "Calendar", icon: <LuCalendar /> },
   ];
 
   return (

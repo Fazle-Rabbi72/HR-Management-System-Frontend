@@ -24,7 +24,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/departments/", {
+      const response = await fetch("https://hr-management-system-liard.vercel.app/departments/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

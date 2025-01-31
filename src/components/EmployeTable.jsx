@@ -13,7 +13,7 @@ const EmployeTable = () => {
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      const response = await fetch("http://127.0.0.1:8000/employees/");
+      const response = await fetch("https://hr-management-system-liard.vercel.app/employees/");
       const data = await response.json();
       setEmployees(data);
       setFilteredEmployees(data);
@@ -25,7 +25,7 @@ const EmployeTable = () => {
     if (!window.confirm("Are you sure you want to delete this employee?")) {
       return;
     }
-    const response = await fetch(`http://127.0.0.1:8000/employees/${id}/`, {
+    const response = await fetch(`https://hr-management-system-liard.vercel.app/employees/${id}/`, {
       method: "DELETE",
     });
     if (response.ok) {

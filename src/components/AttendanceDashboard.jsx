@@ -47,7 +47,7 @@ const AttendanceDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/attendance/attendance/")
+      .get("https://hr-management-system-liard.vercel.app/attendance/attendance/")
       .then((response) => {
         const data = response.data;
         setClockInData(data);

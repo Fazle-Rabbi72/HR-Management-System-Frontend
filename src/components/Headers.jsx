@@ -20,7 +20,7 @@ const Headers = () => {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/employees/${localStorage.getItem("user_id")}/`,
+          `https://hr-management-system-liard.vercel.app/employees/${localStorage.getItem("user_id")}/`,
           {
             headers: {
               Authorization: `Token ${token}`,
