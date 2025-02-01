@@ -44,10 +44,13 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
     });
 
     try {
-      const response = await fetch("https://hr-management-system-liard.vercel.app/employees/", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://hr-management-system-liard.vercel.app/employees/",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         alert("Employee added successfully");

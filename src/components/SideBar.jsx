@@ -13,20 +13,19 @@ const SideBar = () => {
   };
   const SIDEBAR_LINKS = [
     { id: 1, path: "/dashboard", name: "Dashboard", icon: <LuBox /> },
-    { id: 2, path: "", name: "Employees", icon: <LuUsers /> },
-    { id: 3, path: "", name: "Leaves", icon: <LuMessageSquare /> },
-    { id: 5, path: "", name: "Tasks", icon: <LuTrello /> },
-    { id: 5, path: "", name: "Departments", icon: <LuTrello /> },
-    { id: 5, path: "", name: "Payroll", icon: <FaMoneyBill /> },
-    { id: 6, path: "", name: "Calendar", icon: <LuCalendar /> },
+    { id: 2, path: "/dashboard/employee-list", name: "Employees", icon: <LuUsers /> },
+    { id: 3, path: "/dashboard/leave-dashboard", name: "Leaves", icon: <LuMessageSquare /> },
+    { id: 5, path: "/dashboard/task", name: "Tasks", icon: <LuTrello /> },
+    { id: 5, path: "/dashboard/departments", name: "Departments", icon: <LuTrello /> },
+    { id: 5, path: "/dashboard/payroll", name: "Payroll", icon: <FaMoneyBill /> },
+    { id: 6, path: "/dashboard/calendar", name: "Calendar", icon: <LuCalendar /> },
   ];
   const SIDEBAR_EMPLOYEE_LINKS = [
     { id: 1, path: "/dashboard/employee-dashboard", name: "Dashboard", icon: <LuBox /> },
-    { id: 2, path: "", name: "Employees", icon: <LuUsers /> },
-    { id: 4, path: "", name: "Leaves", icon: <LuMessageSquare /> },
-    { id: 5, path: "", name: "Tasks", icon: <FaSuitcase /> },
-    { id: 5, path: "", name: "Salary", icon: <FaMoneyBill /> },
-    { id: 6, path: "", name: "Calendar", icon: <LuCalendar /> },
+    { id: 4, path: "/dashboard/employee-leave-dashboard", name: "Leaves", icon: <LuMessageSquare /> },
+    { id: 5, path: "/dashboard/employe-task", name: "Tasks", icon: <FaSuitcase /> },
+    { id: 5, path: "/dashboard/salary-dashboard", name: "Salary", icon: <FaMoneyBill /> },
+    { id: 6, path: "/dashboard/calendar", name: "Calendar", icon: <LuCalendar /> },
   ];
 
   return (

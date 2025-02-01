@@ -32,6 +32,7 @@ const AdminDashboard = () => {
   const [clients, setClients] = useState([]);
   const [employeeCount , setEmployeeCount] = useState(0);
   const [projectCount, setProjectCount] = useState(0);
+  const [clientCount, setClientsCount] = useState(0);
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -53,6 +54,7 @@ const AdminDashboard = () => {
         setEmployeeCount(employees.length);
         setDepartments(departments);
         setClients(clients);
+        setClientsCount(clients.length)
         setProjectCount(projects.length);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -159,7 +161,7 @@ const AdminDashboard = () => {
     },
     {
       title: "Total Clients",
-      value: "69/86",
+      value: `${clientCount}`,
       
       color: "text-red-600",
       icon: <FaUserTie size={24} className="text-indigo-500" />,
