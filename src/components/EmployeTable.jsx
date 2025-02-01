@@ -195,7 +195,7 @@ const EmployeTable = () => {
             {modalType === "update" && (
               <div>
                 <h2 className="text-lg font-bold">Update Employee</h2>
-                <p>**(Update form আসবে এখানে)**</p>
+                <p>**(Update form will be added later)**</p>
                 <button
                   onClick={() => setShowModal(false)}
                   className="mt-3 bg-red-500 text-white px-4 py-2 rounded-lg"
