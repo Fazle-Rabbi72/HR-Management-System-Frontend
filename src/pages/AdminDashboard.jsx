@@ -30,18 +30,36 @@ const AdminDashboard = () => {
 
   const [departments, setDepartments] = useState([]);
   const [clients, setClients] = useState([]);
-  
+  const [employeeCount , setEmployeeCount] = useState(0);
+  const [projectCount, setProjectCount] = useState(0);
 
   useEffect(() => {
-    fetch("https://hr-management-system-liard.vercel.app/departments/")
-      .then((response) => response.json())
-      .then((data) => setDepartments(data));
-  }, []);
+    const fetchAllData = async () => {
+      try {
+        const [employeesRes, departmentsRes, clientsRes, projectRes] = await Promise.all([
+          fetch("https://hr-management-system-liard.vercel.app/employees/"),
+          fetch("https://hr-management-system-liard.vercel.app/departments/"),
+          fetch("https://hr-management-system-liard.vercel.app/project/clients/"),
+          fetch("https://hr-management-system-liard.vercel.app/project/projects/"),
+        ]);
 
-  useEffect(() => {
-    fetch("https://hr-management-system-liard.vercel.app/project/clients/")
-      .then((response) => response.json())
-      .then((data) => setClients(data));
+        const [employees, departments, clients, projects] = await Promise.all([
+          employeesRes.json(),
+          departmentsRes.json(),
+          clientsRes.json(),
+          projectRes.json(),
+        ]);
+
+        setEmployeeCount(employees.length);
+        setDepartments(departments);
+        setClients(clients);
+        setProjectCount(projects.length);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchAllData();
   }, []);
        
   const handleChange = (e) => {
@@ -127,43 +145,43 @@ const AdminDashboard = () => {
   const stats = [
     {
       title: "Total Employee",
-      value: "92/99",
-      change: "+2.1%",
+      value: `${employeeCount}/100`,
+      
       color: "text-green-600",
       icon: <FaUsers size={24} className="text-indigo-500" />,
     },
     {
       title: "Total Projects",
-      value: "90/94",
-      change: "-2.1%",
+      value: `${projectCount}/100`,
+     
       color: "text-red-600",
       icon: <FaProjectDiagram size={24} className="text-indigo-500" />,
     },
     {
       title: "Total Clients",
       value: "69/86",
-      change: "-11.2%",
+      
       color: "text-red-600",
       icon: <FaUserTie size={24} className="text-indigo-500" />,
     },
     {
       title: "Leave",
       value: "$2144",
-      change: "+10.2%",
+      
       color: "text-green-600",
       icon: <FaDollarSign size={24} className="text-indigo-500" />,
     },
     {
       title: "Leave Pending",
       value: "$5,544",
-      change: "+2.1%",
+      
       color: "text-green-600",
       icon: <FaChartLine size={24} className="text-indigo-500" />,
     },
     {
       title: "Job Applicants",
       value: "98",
-      change: "+2.1%",
+      
       color: "text-green-600",
       icon: <FaSuitcase size={24} className="text-indigo-500" />,
     },
