@@ -152,7 +152,7 @@ const Headers = () => {
           {dropdownOpen && (
             <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
               <li
-                onClick={toggleModal}
+                onClick={()=> navigate("/dashboard/update-profile")}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               >
                 Profile

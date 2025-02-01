@@ -14,6 +14,7 @@ import AdminLeavDashboard from "./components/AdminLeavDashboard";
 import AdminTask from "./components/AdminTask";
 import EmployeeLeaveDashboard from "./components/EmployeeLeaveDashboard";
 import EmployeeTask from "./components/EmployeeTask";
+import UpdateProfile from "./components/UpdateProfile";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="task" element={<AdminTask/>}/>
           <Route path="employee-leave-dashboard" element={<EmployeeLeaveDashboard/>}/>
           <Route path="employe-task" element={<EmployeeTask/>}/>
+          <Route path="update-profile" element={<UpdateProfile/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
