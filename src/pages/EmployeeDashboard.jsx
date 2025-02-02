@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AttendanceTable from "../components/AttendanceTable";
-
+import EmployeeLeaveDashboard from "../components/EmployeeLeaveDashboard";
 
 const EmployeeDashboard = () => {
   const navigate = useNavigate();
@@ -51,8 +51,7 @@ const EmployeeDashboard = () => {
 
   return (
     <div>
-
-      <div className="flex flex-col items-center mt-5 bg-white shadow-md p-6 rounded-lg w-full  mx-auto">
+      <div className="flex flex-col items-center mt-5 bg-indigo-50 shadow-md p-6 rounded-lg w-full  mx-auto">
         <form
           onSubmit={handleSubmit}
           className="flex flex-wrap gap-4 items-center justify-center w-full"
@@ -124,7 +123,7 @@ const EmployeeDashboard = () => {
 
         <AttendanceTable />
       </div>
-
+      <EmployeeLeaveDashboard />
     </div>
   );
 };

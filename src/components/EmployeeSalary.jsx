@@ -8,6 +8,7 @@ const EmployeeSalary = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedSalary, setSelectedSalary] = useState(null);
   const [employeeDetails, setEmployeeDetails] = useState(null);
+  const [showAll, setShowAll] = useState(false);
 
   // Fetch Employee ID from LocalStorage
   useEffect(() => {
@@ -24,7 +25,13 @@ const EmployeeSalary = () => {
     const fetchEmployeeDetails = async () => {
       try {
         const response = await fetch(
-          `https://hr-management-system-liard.vercel.app/employees/${employeeId}/`
+          `https://hr-management-system-liard.vercel.app/employees/${employeeId}/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+          }
         );
         const data = await response.json();
         setEmployeeDetails(data);
@@ -51,7 +58,7 @@ const EmployeeSalary = () => {
         const response = await fetch(apiUrl);
         const data = await response.json();
         setSalaries(data);
-        setFilteredSalaries(data);
+        setFilteredSalaries(showAll ? data : data.slice(0, 12));
       } catch (error) {
         console.error("Error fetching salaries:", error);
       }
@@ -125,7 +132,7 @@ const EmployeeSalary = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 mb-20">
       <h2 className="text-xl font-bold mb-3">Employee Salary</h2>
 
       {/* Year Filter Input */}
@@ -140,51 +147,68 @@ const EmployeeSalary = () => {
       </div>
 
       {/* Salary Table */}
-      <table className="w-full border-collapse border">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">Basic Salary</th>
-            <th className="border p-2">Bonus</th>
-            <th className="border p-2">Deduction</th>
-            <th className="border p-2">Tax</th>
-            <th className="border p-2">Month</th>
-            <th className="border p-2">Year</th>
-            <th className="border p-2">Status</th>
-            <th className="border p-2">Net Salary</th>
-            <th className="border p-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredSalaries.map((sal) => (
-            <tr key={sal.id} className="text-center">
-              <td className="border p-2">{sal.basic_salary}</td>
-              <td className="border p-2">{sal.bonus}</td>
-              <td className="border p-2">{sal.deductions}</td>
-              <td className="border p-2">{sal.tax}</td>
-              <td className="border p-2">{sal.month}</td>
-              <td className="border p-2">{sal.year}</td>
-              <td className="border p-2">
-                <button
-                  className={`${
-                    sal.status === "paid" ? "bg-green-500" : "bg-red-500"
-                  } text-white px-4 py-2 rounded-md`}
-                >
-                  {sal.status === "paid" ? "Paid" : "Unpaid"}
-                </button>
-              </td>
-              <td className="border p-2">{sal.net_salary}</td>
-              <td className="border p-2">
-                <button
-                  onClick={() => openModal(sal)}
-                  className="bg-blue-500 rounded-md text-white px-4 py-2 mr-2"
-                >
-                  Generate Payslip
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse border bg-white shadow-lg rounded-lg overflow-hidden">
+          <thead>
+            <tr className="bg-blue-600 text-white text-sm uppercase">
+              <th className="border p-3">Basic Salary</th>
+              <th className="border p-3">Bonus</th>
+              <th className="border p-3">Deduction</th>
+              <th className="border p-3">Tax</th>
+              <th className="border p-3">Month</th>
+              <th className="border p-3">Year</th>
+              <th className="border p-3">Status</th>
+              <th className="border p-3">Net Salary</th>
+              <th className="border p-3">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredSalaries.map((sal) => (
+              <tr
+                key={sal.id}
+                className="text-center border hover:bg-gray-100 transition duration-300"
+              >
+                <td className="border p-3">{sal.basic_salary}</td>
+                <td className="border p-3">{sal.bonus}</td>
+                <td className="border p-3">{sal.deductions}</td>
+                <td className="border p-3">{sal.tax}</td>
+                <td className="border p-3">{sal.month}</td>
+                <td className="border p-3">{sal.year}</td>
+                <td className="border p-3">
+                  <span
+                    className={`px-4 py-1 rounded-full text-white text-sm font-semibold ${
+                      sal.paid ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  >
+                    {sal.paid ? "Paid" : "Unpaid"}
+                  </span>
+                </td>
+                <td className="border p-3">{sal.net_salary}</td>
+                <td className="border p-3">
+                  <button
+                    onClick={() => openModal(sal)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-200"
+                  >
+                    Generate Payslip
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* View All Button */}
+      {salaries.length > 12 && (
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="bg-blue-800 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-200"
+          >
+            {showAll ? "View Less" : "View All"}
+          </button>
+        </div>
+      )}
 
       {/* Payslip Modal */}
       {showModal && selectedSalary && (
@@ -193,7 +217,9 @@ const EmployeeSalary = () => {
             id="payslip-modal-content"
             className="bg-white p-8 rounded-lg shadow-xl w-3/4 sm:w-1/2"
           >
-            <h3 className="text-3xl font-semibold text-center text-blue-600 mb-6">Payslip</h3>
+            <h3 className="text-3xl font-semibold text-center text-blue-600 mb-6">
+              Payslip
+            </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {/* Employee Details */}
@@ -201,10 +227,20 @@ const EmployeeSalary = () => {
                 <h4 className="text-xl font-semibold">Employee Details</h4>
                 {employeeDetails ? (
                   <>
-                    <p><strong>Name:</strong> {employeeDetails.first_name} {employeeDetails.last_name}</p>
-                    <p><strong>Department:</strong> {employeeDetails.department_name}</p>
-                    <p><strong>Position:</strong> {employeeDetails.designation}</p>
-                    <p><strong>Email:</strong> {employeeDetails.email}</p>
+                    <p>
+                      <strong>Name:</strong> {employeeDetails.first_name}{" "}
+                      {employeeDetails.last_name}
+                    </p>
+                    <p>
+                      <strong>Department:</strong>{" "}
+                      {employeeDetails.department_name}
+                    </p>
+                    <p>
+                      <strong>Position:</strong> {employeeDetails.designation}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {employeeDetails.email}
+                    </p>
                   </>
                 ) : (
                   <p>Loading employee details...</p>
@@ -214,20 +250,39 @@ const EmployeeSalary = () => {
               {/* Salary Details */}
               <div className="space-y-2">
                 <h4 className="text-xl font-semibold">Salary Details</h4>
-                <p><strong>Basic Salary:</strong> {selectedSalary.basic_salary}</p>
-                <p><strong>Bonus:</strong> {selectedSalary.bonus}</p>
-                <p><strong>Deduction:</strong> {selectedSalary.deductions}</p>
-                <p><strong>Tax:</strong> {selectedSalary.tax}</p>
-                <p><strong>Month:</strong> {selectedSalary.month}</p>
-                <p><strong>Year:</strong> {selectedSalary.year}</p>
-                <p><strong>Status:</strong> {selectedSalary.status === "paid" ? "Paid" : "Unpaid"}</p>
-                <p><strong>Net Salary:</strong> {selectedSalary.net_salary}</p>
+                <p>
+                  <strong>Basic Salary:</strong> {selectedSalary.basic_salary}
+                </p>
+                <p>
+                  <strong>Bonus:</strong> {selectedSalary.bonus}
+                </p>
+                <p>
+                  <strong>Deduction:</strong> {selectedSalary.deductions}
+                </p>
+                <p>
+                  <strong>Tax:</strong> {selectedSalary.tax}
+                </p>
+                <p>
+                  <strong>Month:</strong> {selectedSalary.month}
+                </p>
+                <p>
+                  <strong>Year:</strong> {selectedSalary.year}
+                </p>
+                <p>
+                  <strong>Status:</strong>{" "}
+                  {selectedSalary.paid === true ? "Paid" : "Unpaid"}
+                </p>
+                <p>
+                  <strong>Net Salary:</strong> {selectedSalary.net_salary}
+                </p>
               </div>
             </div>
 
             {/* Signature */}
             <div className="mt-6">
-              <p><strong>Signature:</strong> __________________________</p>
+              <p>
+                <strong>Signature:</strong> __________________________
+              </p>
             </div>
 
             {/* Buttons */}

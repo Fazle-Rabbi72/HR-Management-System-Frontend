@@ -28,7 +28,12 @@ const AttendanceTable = ({ employeeId }) => {
 
     const fetchEmployee = async () => {
       try {
-        const response = await fetch(`https://hr-management-system-liard.vercel.app/employees/${localStorage.getItem("user_id")}/`);
+        const response = await fetch(`https://hr-management-system-liard.vercel.app/employees/${localStorage.getItem("user_id")}/`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          }
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch employee data");
         }
