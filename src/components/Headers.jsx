@@ -137,8 +137,6 @@ const Headers = () => {
 
         <div
           className="relative"
-          onMouseEnter={() => setDropdownOpen(true)}
-          onMouseLeave={() => setDropdownOpen(false)}
         >
           <img
             className="w-10 h-10 rounded-full border-2 border-indigo-500 hover:shadow-lg cursor-pointer"
@@ -148,6 +146,7 @@ const Headers = () => {
                 : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             alt="Profile"
+            onClick={toggleDropdown} 
           />
           {dropdownOpen && (
             <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">

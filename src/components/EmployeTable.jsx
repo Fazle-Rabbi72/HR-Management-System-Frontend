@@ -13,8 +13,15 @@ const EmployeTable = () => {
 
   useEffect(() => {
     const fetchEmployees = async () => {
+      const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://hr-management-system-liard.vercel.app/employees/"
+        "https://hr-management-system-liard.vercel.app/employees/",
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+
+        }
       );
       const data = await response.json();
       setEmployees(data);
@@ -31,6 +38,9 @@ const EmployeTable = () => {
       `https://hr-management-system-liard.vercel.app/employees/${id}/`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        }
       }
     );
     if (response.ok) {

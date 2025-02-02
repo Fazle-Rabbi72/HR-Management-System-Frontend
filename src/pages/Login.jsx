@@ -3,6 +3,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SuccessModal from "../components/SuccessModal";
+import ForgotPasswordModal from "../components/modal/ForgotPasswordModal";
+import OTPVerificationModal from "../components/modal/OTPVerificationModal";
+import ResetPasswordModal from "../components/modal/ResetPasswordModal";
 
 const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -11,7 +14,12 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
+  const [isOTPVerificationModalOpen, setIsOTPVerificationModalOpen] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -37,7 +45,7 @@ const Login = () => {
       localStorage.setItem("role", role);
 
       setError("");
-      setIsModalOpen(true); // Open the modal on successful login
+      setIsModalOpen(true);
 
       // Navigate based on user role after a short delay
       setTimeout(() => {
@@ -48,7 +56,7 @@ const Login = () => {
         } else if (role === "employee") {
           navigate("/dashboard/employee-dashboard");
         }
-      }, 2000); // Delay for 2 seconds to show the modal
+      }, 2000);
     } catch (err) {
       setError("Invalid username or password");
     } finally {
@@ -60,7 +68,9 @@ const Login = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div>
         <div>
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Welcome to HRM</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+            Welcome to HRM
+          </h2>
         </div>
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
@@ -117,15 +127,50 @@ const Login = () => {
                 {loading ? "Logging in..." : "Login"}
               </button>
             </div>
-            <p>Username:admin,
-              password:123,
-              username:fazle_rabbi,
-              password:fazle1234,
+            <p className="text-center text-sm text-gray-600 mt-2">
+              <a
+                href="#"
+                onClick={() => setIsForgotPasswordModalOpen(true)}
+                className="text-blue-600 hover:underline"
+              >
+                Forgot Password?
+              </a>
+            </p>
+            <hr />
+            <p className="border-2 border-dashed border-gray-500 p-4 text-center text-gray-700 font-semibold">
+              Username: admin, password: 123<br />
+              Username: fazle_rabbi, password: fazle1234
             </p>
           </form>
         </div>
       </div>
-      <SuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <SuccessModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <ForgotPasswordModal
+        isOpen={isForgotPasswordModalOpen}
+        onClose={() => setIsForgotPasswordModalOpen(false)}
+        onSuccess={(email) => {
+          setEmail(email);
+          setIsOTPVerificationModalOpen(true); // Open OTP verification modal
+        }}
+      />
+      <OTPVerificationModal
+        isOpen={isOTPVerificationModalOpen}
+        onClose={() => setIsOTPVerificationModalOpen(false)}
+        email={email}
+        onSuccess={(otp) => {
+          setOtp(otp);
+          setIsResetPasswordModalOpen(true); // Open reset password modal
+        }}
+      />
+      <ResetPasswordModal
+        isOpen={isResetPasswordModalOpen}
+        onClose={() => setIsResetPasswordModalOpen(false)}
+        email={email}
+        otp={otp}
+      />
     </div>
   );
 };

@@ -36,12 +36,22 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchAllData = async () => {
+      const token = localStorage.getItem("token");
       try {
         const [employeesRes, departmentsRes, clientsRes, projectRes] = await Promise.all([
-          fetch("https://hr-management-system-liard.vercel.app/employees/"),
+          fetch("https://hr-management-system-liard.vercel.app/employees/",
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+            },
+          ),
+          
           fetch("https://hr-management-system-liard.vercel.app/departments/"),
           fetch("https://hr-management-system-liard.vercel.app/project/clients/"),
           fetch("https://hr-management-system-liard.vercel.app/project/projects/"),
+          
+          
         ]);
 
         const [employees, departments, clients, projects] = await Promise.all([
