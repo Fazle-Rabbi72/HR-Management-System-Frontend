@@ -107,13 +107,13 @@ const AdminLeavDashboard = () => {
                       <div className="flex justify-center gap-2">
                         <button
                           onClick={() => handleStatusChange(leave.id, "Approved")}
-                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                          className="bg-green-500 text-white px-3 py-1 rounded hover:cursor-pointer hover:bg-green-600"
                         >
                           Approve
                         </button>
                         <button
                           onClick={() => handleStatusChange(leave.id, "Rejected")}
-                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:cursor-pointer hover:bg-red-600"
                         >
                           Reject
                         </button>

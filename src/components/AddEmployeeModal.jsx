@@ -49,6 +49,9 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
         {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("token")}`,
+          }
         }
       );
 

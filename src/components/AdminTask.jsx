@@ -2,7 +2,7 @@ import React from 'react'
 
 const AdminTask = () => {
   return (
-    <div>AdminTask</div>
+    <div>Working</div>
   )
 }
 
