@@ -1,16 +1,14 @@
 import React, {useEffect, useState } from "react";
 import {
-  FaUsers,
-  FaChartLine,
-  FaProjectDiagram,
-  FaDollarSign,
-  FaSuitcase,
-  FaUserTie,
+  
   FaPlus,
   FaCalendarAlt,
+
 } from "react-icons/fa";
+import { Users, Briefcase, Building, CalendarCheck, Clock, UserCheck } from "lucide-react";
 import AttendanceDashboard from "../components/AttendanceDashboard";
 import EmployeeList from "../components/EmployeeList";
+import AdminLeavDashboard from "../components/AdminLeavDashboard";
 
 const AdminDashboard = () => {
   const [tab, setTab] = useState("");
@@ -34,12 +32,13 @@ const AdminDashboard = () => {
   const [projectCount, setProjectCount] = useState(0);
   const [clientCount, setClientsCount] = useState(0);
   const [leave, setLeave] = useState(0);
+  const [leavePending, setLeavePending] = useState(0);
 
   useEffect(() => {
     const fetchAllData = async () => {
       const token = localStorage.getItem("token");
       try {
-        const [employeesRes, departmentsRes, clientsRes, projectRes, leaveRes] = await Promise.all([
+        const [employeesRes, departmentsRes, clientsRes, projectRes, leaveRes, leavePendingRes] = await Promise.all([
           fetch("https://hr-management-system-liard.vercel.app/employees/",
             {
               headers: {
@@ -58,16 +57,24 @@ const AdminDashboard = () => {
               },
             },
           ),
+          fetch("https://hr-management-system-liard.vercel.app/leave_request/leaves/",
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+            },
+          ),
           
           
         ]);
 
-        const [employees, departments, clients, projects, leaves] = await Promise.all([
+        const [employees, departments, clients, projects, leaves, leavesPending] = await Promise.all([
           employeesRes.json(),
           departmentsRes.json(),
           clientsRes.json(),
           projectRes.json(),
           leaveRes.json(),
+          leavePendingRes.json(),
         ]);
 
         setEmployeeCount(employees.length);
@@ -76,6 +83,10 @@ const AdminDashboard = () => {
         setClientsCount(clients.length)
         setProjectCount(projects.length);
         setLeave(leaves.length);
+
+        const pendingsLeaves = leavesPending.filter((leave) => leave.status === "Pending").length;
+        setLeavePending(pendingsLeaves);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -168,44 +179,38 @@ const AdminDashboard = () => {
     {
       title: "Total Employee",
       value: `${employeeCount}/100`,
-      
       color: "text-green-600",
-      icon: <FaUsers size={24} className="text-indigo-500" />,
+      icon: <Users size={28} className="text-indigo-500 drop-shadow-lg" />, // Employee Icon
     },
     {
       title: "Total Projects",
       value: `${projectCount}/100`,
-     
       color: "text-red-600",
-      icon: <FaProjectDiagram size={24} className="text-indigo-500" />,
+      icon: <Building size={28} className="text-indigo-500 drop-shadow-lg" />, // Projects Icon
     },
     {
       title: "Total Clients",
       value: `${clientCount}`,
-      
-      color: "text-red-600",
-      icon: <FaUserTie size={24} className="text-indigo-500" />,
+      color: "text-blue-600",
+      icon: <UserCheck size={28} className="text-indigo-500 drop-shadow-lg" />, // Clients Icon
     },
     {
       title: "Leave",
       value: `${leave}`,
-      
       color: "text-green-600",
-      icon: <FaDollarSign size={24} className="text-indigo-500" />,
+      icon: <CalendarCheck size={28} className="text-indigo-500 drop-shadow-lg" />, // Leave Icon
     },
     {
       title: "Leave Pending",
-      value: "$5,544",
-      
-      color: "text-green-600",
-      icon: <FaChartLine size={24} className="text-indigo-500" />,
+      value: `${leavePending}`,
+      color: "text-yellow-600",
+      icon: <Clock size={28} className="text-indigo-500 drop-shadow-lg" />, // Leave Pending Icon
     },
     {
       title: "Job Applicants",
       value: "98",
-      
-      color: "text-green-600",
-      icon: <FaSuitcase size={24} className="text-indigo-500" />,
+      color: "text-purple-600",
+      icon: <Briefcase size={28} className="text-indigo-500 drop-shadow-lg" />, // Job Applicants Icon
     },
   ];
 
@@ -362,6 +367,7 @@ const AdminDashboard = () => {
       )}
 
       {tab === "Total Employee" && <EmployeeList />}
+      {tab === "Leave Pending" && <AdminLeavDashboard />}
 
       {/* Add Department Modal */}
       {isModalOpen && (
