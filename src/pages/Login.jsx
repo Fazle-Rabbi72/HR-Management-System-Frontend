@@ -168,6 +168,7 @@ const Login = () => {
       <ResetPasswordModal
         isOpen={isResetPasswordModalOpen}
         onClose={() => setIsResetPasswordModalOpen(false)}
+        setIsResetPasswordModalOpen={setIsResetPasswordModalOpen}
         email={email}
         otp={otp}
       />

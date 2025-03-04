@@ -20,6 +20,7 @@ const SideBar = () => {
     { id: 5, path: "/dashboard/payroll", name: "Payroll", icon: <FaMoneyBill /> },
     { id: 6, path: "/dashboard/calendar", name: "Calendar", icon: <LuCalendar /> },
   ];
+  
   const SIDEBAR_EMPLOYEE_LINKS = [
     { id: 1, path: "/dashboard/employee-dashboard", name: "Dashboard", icon: <LuBox /> },
     { id: 4, path: "/dashboard/employee-leave-dashboard", name: "Leaves", icon: <LuMessageSquare /> },

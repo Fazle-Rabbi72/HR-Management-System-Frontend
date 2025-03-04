@@ -33,12 +33,13 @@ const AdminDashboard = () => {
   const [employeeCount , setEmployeeCount] = useState(0);
   const [projectCount, setProjectCount] = useState(0);
   const [clientCount, setClientsCount] = useState(0);
+  const [leave, setLeave] = useState(0);
 
   useEffect(() => {
     const fetchAllData = async () => {
       const token = localStorage.getItem("token");
       try {
-        const [employeesRes, departmentsRes, clientsRes, projectRes] = await Promise.all([
+        const [employeesRes, departmentsRes, clientsRes, projectRes, leaveRes] = await Promise.all([
           fetch("https://hr-management-system-liard.vercel.app/employees/",
             {
               headers: {
@@ -50,15 +51,23 @@ const AdminDashboard = () => {
           fetch("https://hr-management-system-liard.vercel.app/departments/"),
           fetch("https://hr-management-system-liard.vercel.app/project/clients/"),
           fetch("https://hr-management-system-liard.vercel.app/project/projects/"),
+          fetch("https://hr-management-system-liard.vercel.app/leave_request/leaves/?approved_today=true",
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+            },
+          ),
           
           
         ]);
 
-        const [employees, departments, clients, projects] = await Promise.all([
+        const [employees, departments, clients, projects, leaves] = await Promise.all([
           employeesRes.json(),
           departmentsRes.json(),
           clientsRes.json(),
           projectRes.json(),
+          leaveRes.json(),
         ]);
 
         setEmployeeCount(employees.length);
@@ -66,6 +75,7 @@ const AdminDashboard = () => {
         setClients(clients);
         setClientsCount(clients.length)
         setProjectCount(projects.length);
+        setLeave(leaves.length);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -178,7 +188,7 @@ const AdminDashboard = () => {
     },
     {
       title: "Leave",
-      value: "$2144",
+      value: `${leave}`,
       
       color: "text-green-600",
       icon: <FaDollarSign size={24} className="text-indigo-500" />,

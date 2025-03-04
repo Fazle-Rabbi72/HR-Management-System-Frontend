@@ -14,7 +14,9 @@ const AttendanceTable = ({ employeeId }) => {
     const fetchAttendance = async () => {
       try {
         const response = await fetch(
-          `https://hr-management-system-liard.vercel.app/attendance/attendance/by_employee/?employee_id=${localStorage.getItem("user_id")}`
+          `https://hr-management-system-liard.vercel.app/attendance/attendance/by_employee/?employee_id=${localStorage.getItem(
+            "user_id"
+          )}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch attendance data");
@@ -28,12 +30,17 @@ const AttendanceTable = ({ employeeId }) => {
 
     const fetchEmployee = async () => {
       try {
-        const response = await fetch(`https://hr-management-system-liard.vercel.app/employees/${localStorage.getItem("user_id")}/`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${localStorage.getItem("token")}`,
+        const response = await fetch(
+          `https://hr-management-system-liard.vercel.app/employees/${localStorage.getItem(
+            "user_id"
+          )}/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
           }
-        });
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch employee data");
         }
@@ -56,7 +63,10 @@ const AttendanceTable = ({ employeeId }) => {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentAttendance = filteredAttendance.slice(indexOfFirstItem, indexOfLastItem);
+  const currentAttendance = filteredAttendance.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Export Attendance Data as CSV
   const exportCSV = () => {
@@ -88,14 +98,24 @@ const AttendanceTable = ({ employeeId }) => {
       doc.text("Employee Attendance Report", 10, 10);
 
       doc.setFontSize(12);
-      doc.text(`Employee Name: ${employee.first_name + " " + employee.last_name}`, 10, 20);
+      doc.text(
+        `Employee Name: ${employee.first_name + " " + employee.last_name}`,
+        10,
+        20
+      );
       doc.text(`Employee ID: ${employee.id}`, 10, 30);
       doc.text(`Designation: ${employee.designation}`, 10, 40);
       doc.text(`Department: ${employee.department}`, 10, 50);
       doc.text(`Email: ${employee.email}`, 10, 60);
     }
 
-    const tableColumn = ["Date", "Status", "Punch In", "Punch Out", "Total Hours"];
+    const tableColumn = [
+      "Date",
+      "Status",
+      "Punch In",
+      "Punch Out",
+      "Total Hours",
+    ];
     const tableRows = attendance.map((att) => [
       att.date,
       att.status,
@@ -117,33 +137,32 @@ const AttendanceTable = ({ employeeId }) => {
     <div className="w-full mt-5">
       {/* Search and Export Buttons */}
       <div className="mb-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-2">
-  <h2 className="text-2xl font-bold text-purple-700 text-center md:text-left">
-    Employee Attendance
-  </h2>
-  <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center">
-    <input
-      type="date"
-      value={searchDate}
-      onChange={(e) => setSearchDate(e.target.value)}
-      className="border rounded-lg px-4 py-2 w-full md:w-48 focus:outline-none focus:ring-2 focus:ring-purple-500"
-    />
-    <div className="flex gap-3 w-full md:w-auto">
-      <button
-        onClick={exportCSV}
-        className="bg-blue-500 text-white px-6 py-3 rounded-lg w-full md:w-auto hover:bg-blue-600 transition duration-300"
-      >
-        Export CSV
-      </button>
-      <button
-        onClick={exportPDF}
-        className="bg-green-500 text-white px-6 py-3 rounded-lg w-full md:w-auto hover:bg-green-600 transition duration-300"
-      >
-        Export PDF
-      </button>
-    </div>
-  </div>
-</div>
-
+        <h2 className="text-2xl font-bold text-purple-700 text-center md:text-left">
+          Employee Attendance
+        </h2>
+        <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center">
+          <input
+            type="date"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+            className="border rounded-lg px-4 py-2 w-full md:w-48 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <div className="flex gap-3 w-full md:w-auto">
+            <button
+              onClick={exportCSV}
+              className="bg-blue-500 text-white px-6 py-3 rounded-lg w-full md:w-auto hover:bg-blue-600 transition duration-300"
+            >
+              Export CSV
+            </button>
+            <button
+              onClick={exportPDF}
+              className="bg-green-500 text-white px-6 py-3 rounded-lg w-full md:w-auto hover:bg-green-600 transition duration-300"
+            >
+              Export PDF
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Attendance Table */}
       <div className="overflow-x-auto">
@@ -160,20 +179,30 @@ const AttendanceTable = ({ employeeId }) => {
           <tbody>
             {currentAttendance.length > 0 ? (
               currentAttendance.map((att) => (
-                <tr key={att.id} className="border-b hover:bg-gray-50 text-center text-sm md:text-base">
+                <tr
+                  key={att.id}
+                  className="border-b hover:bg-gray-50 text-center text-sm md:text-base"
+                >
                   <td className="p-2 md:p-3">{att.date}</td>
                   <td className="p-2 md:p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-white text-xs md:text-sm ${
-                        att.status === "Present" ? "bg-green-500" :
-                        att.status === "Late" ? "bg-yellow-500" : "bg-red-500"
+                        att.status === "Present"
+                          ? "bg-green-500"
+                          : att.status === "Late"
+                          ? "bg-yellow-500"
+                          : "bg-red-500"
                       }`}
                     >
                       {att.status}
                     </span>
                   </td>
-                  <td className="p-2 md:p-3">{new Date(att.punch_in).toLocaleTimeString()}</td>
-                  <td className="p-2 md:p-3">{new Date(att.punch_out).toLocaleTimeString()}</td>
+                  <td className="p-2 md:p-3">
+                    {new Date(att.punch_in).toLocaleTimeString()}
+                  </td>
+                  <td className="p-2 md:p-3">
+                    {new Date(att.punch_out).toLocaleTimeString()}
+                  </td>
                   <td className="p-2 md:p-3">{att.total_working_hours}</td>
                 </tr>
               ))

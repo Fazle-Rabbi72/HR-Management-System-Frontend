@@ -166,7 +166,7 @@ const AttendanceDashboard = () => {
               className="flex items-center justify-between p-4 bg-gray-100 rounded-lg"
             >
               <div>
-                <p className="font-semibold text-gray-800">{`Employee ${attendance.employee}`}</p>
+                <p className="font-semibold text-gray-800">{` ${attendance.employee_name}`}</p>
                 <p className="text-sm text-gray-600">{`Date: ${attendance.date}`}</p>
               </div>
               <div className="flex flex-col items-end">
