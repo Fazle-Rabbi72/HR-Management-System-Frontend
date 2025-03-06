@@ -1,11 +1,13 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { FaPlus, FaCalendarAlt } from "react-icons/fa";
 import {
-  
-  FaPlus,
-  FaCalendarAlt,
-
-} from "react-icons/fa";
-import { Users, Briefcase, Building, CalendarCheck, Clock, UserCheck } from "lucide-react";
+  Users,
+  Briefcase,
+  Building,
+  CalendarCheck,
+  Clock,
+  UserCheck,
+} from "lucide-react";
 import AttendanceDashboard from "../components/AttendanceDashboard";
 import EmployeeList from "../components/EmployeeList";
 import AdminLeavDashboard from "../components/AdminLeavDashboard";
@@ -28,47 +30,109 @@ const AdminDashboard = () => {
 
   const [departments, setDepartments] = useState([]);
   const [clients, setClients] = useState([]);
-  const [employeeCount , setEmployeeCount] = useState(0);
+  const [employeeCount, setEmployeeCount] = useState(0);
   const [projectCount, setProjectCount] = useState(0);
   const [clientCount, setClientsCount] = useState(0);
   const [leave, setLeave] = useState(0);
   const [leavePending, setLeavePending] = useState(0);
 
+  const [department, setDepartment] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch(
+          "https://hr-management-system-liard.vercel.app/employees/",
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`, // যদি API টোকেন দরকার হয়
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+
+        // ডিপার্টমেন্ট অনুযায়ী এমপ্লয়িদের সংখ্যা গণনা
+        const departmentCounts = {};
+        data.forEach((employee) => {
+          const dept = employee.department || "Unknown";
+          departmentCounts[dept] = (departmentCounts[dept] || 0) + 1;
+        });
+
+        // অবজেক্টকে অ্যারের মধ্যে কনভার্ট করা
+        const departmentArray = Object.entries(departmentCounts).map(
+          ([name, count]) => ({
+            name,
+            count,
+            percentage: Math.min((count / data.length) * 100, 100),
+          })
+        );
+
+        setDepartment(departmentArray);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
+
   useEffect(() => {
     const fetchAllData = async () => {
       const token = localStorage.getItem("token");
       try {
-        const [employeesRes, departmentsRes, clientsRes, projectRes, leaveRes, leavePendingRes] = await Promise.all([
-          fetch("https://hr-management-system-liard.vercel.app/employees/",
-            {
-              headers: {
-                Authorization: `Token ${token}`,
-              },
+        const [
+          employeesRes,
+          departmentsRes,
+          clientsRes,
+          projectRes,
+          leaveRes,
+          leavePendingRes,
+        ] = await Promise.all([
+          fetch("https://hr-management-system-liard.vercel.app/employees/", {
+            headers: {
+              Authorization: `Token ${token}`,
             },
-          ),
-          
+          }),
+
           fetch("https://hr-management-system-liard.vercel.app/departments/"),
-          fetch("https://hr-management-system-liard.vercel.app/project/clients/"),
-          fetch("https://hr-management-system-liard.vercel.app/project/projects/"),
-          fetch("https://hr-management-system-liard.vercel.app/leave_request/leaves/?approved_today=true",
+          fetch(
+            "https://hr-management-system-liard.vercel.app/project/clients/"
+          ),
+          fetch(
+            "https://hr-management-system-liard.vercel.app/project/projects/"
+          ),
+          fetch(
+            "https://hr-management-system-liard.vercel.app/leave_request/leaves/?approved_today=true",
             {
               headers: {
                 Authorization: `Token ${token}`,
               },
-            },
+            }
           ),
-          fetch("https://hr-management-system-liard.vercel.app/leave_request/leaves/",
+          fetch(
+            "https://hr-management-system-liard.vercel.app/leave_request/leaves/",
             {
               headers: {
                 Authorization: `Token ${token}`,
               },
-            },
+            }
           ),
-          
-          
         ]);
 
-        const [employees, departments, clients, projects, leaves, leavesPending] = await Promise.all([
+        const [
+          employees,
+          departments,
+          clients,
+          projects,
+          leaves,
+          leavesPending,
+        ] = await Promise.all([
           employeesRes.json(),
           departmentsRes.json(),
           clientsRes.json(),
@@ -80,13 +144,14 @@ const AdminDashboard = () => {
         setEmployeeCount(employees.length);
         setDepartments(departments);
         setClients(clients);
-        setClientsCount(clients.length)
+        setClientsCount(clients.length);
         setProjectCount(projects.length);
         setLeave(leaves.length);
 
-        const pendingsLeaves = leavesPending.filter((leave) => leave.status === "Pending").length;
+        const pendingsLeaves = leavesPending.filter(
+          (leave) => leave.status === "Pending"
+        ).length;
         setLeavePending(pendingsLeaves);
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -94,7 +159,7 @@ const AdminDashboard = () => {
 
     fetchAllData();
   }, []);
-       
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
@@ -198,7 +263,9 @@ const AdminDashboard = () => {
       title: "Leave",
       value: `${leave}`,
       color: "text-green-600",
-      icon: <CalendarCheck size={28} className="text-indigo-500 drop-shadow-lg" />, // Leave Icon
+      icon: (
+        <CalendarCheck size={28} className="text-indigo-500 drop-shadow-lg" />
+      ), // Leave Icon
     },
     {
       title: "Leave Pending",
@@ -336,26 +403,27 @@ const AdminDashboard = () => {
                 <FaCalendarAlt /> This Week
               </button>
             </div>
-            <div className="space-y-4">
-              {[
-                "UI/UX",
-                "Development",
-                "Management",
-                "HR",
-                "Testing",
-                "Marketing",
-              ].map((dept, index) => (
-                <div key={index}>
-                  <p className="text-gray-600 font-medium mb-1">{dept}</p>
-                  <div className="w-full bg-gray-200 rounded-lg h-4 overflow-hidden">
-                    <div
-                      className={`h-full bg-orange-500`}
-                      style={{ width: `${Math.random() * 100 + 20}%` }}
-                    ></div>
+
+            {loading ? (
+              <p className="text-center text-gray-600">Loading...</p>
+            ) : (
+              <div className="space-y-4">
+                {department.map((dept, index) => (
+                  <div key={index}>
+                    <p className="text-gray-600 font-medium mb-1">
+                      {dept.name}
+                    </p>
+                    <div className="w-full bg-gray-200 rounded-lg h-4 overflow-hidden">
+                      <div
+                        className="h-full bg-orange-500"
+                        style={{ width: `${dept.percentage}%` }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
+
             <p className="text-sm text-gray-600 mt-4">
               <span className="text-orange-500">●</span> No of Employees
               increased by{" "}
@@ -425,7 +493,7 @@ const AdminDashboard = () => {
                     placeholder="Enter project name"
                     name="name"
                     value={addProject.name}
-                    onChange={handleChange} 
+                    onChange={handleChange}
                     className="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                   />
