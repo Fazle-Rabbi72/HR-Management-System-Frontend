@@ -98,7 +98,7 @@ const Headers = () => {
   };
 
   return (
-    <header className="flex flex-wrap items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg">
+    <header className="flex flex-wrap items-center justify-between bg-white shadow-md p-2 md:p-2 rounded-lg">
       <div className="flex flex-col">
         <h1 className="text-sm text-gray-500">Welcome Back!</h1>
         <p className="text-lg md:text-xl font-semibold text-gray-800">

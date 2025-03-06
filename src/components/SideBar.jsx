@@ -61,7 +61,7 @@ const SideBar = () => {
                 onClick={() => handaleclick(index)}
               >
                 <span>{link.icon}</span>
-                <span className="text-sm text-gray-500 hidden md:flex">
+                <span className="text-lg text-gray-500 hidden md:flex">
                   {link.name}
                 </span>
               </Link>
@@ -93,7 +93,7 @@ const SideBar = () => {
                 onClick={() => handaleclick(index)}
               >
                 <span>{link.icon}</span>
-                <span className="text-sm text-gray-500 hidden md:flex">
+                <span className="text-lg text-gray-500 hidden md:flex">
                   {link.name}
                 </span>
               </Link>

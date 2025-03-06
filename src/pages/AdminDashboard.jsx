@@ -46,7 +46,7 @@ const AdminDashboard = () => {
           "https://hr-management-system-liard.vercel.app/employees/",
           {
             headers: {
-              Authorization: `Token ${localStorage.getItem("token")}`, // যদি API টোকেন দরকার হয়
+              Authorization: `Token ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -54,23 +54,24 @@ const AdminDashboard = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-
-        // ডিপার্টমেন্ট অনুযায়ী এমপ্লয়িদের সংখ্যা গণনা
+        console.log(data);
+  
+       
         const departmentCounts = {};
         data.forEach((employee) => {
-          const dept = employee.department || "Unknown";
-          departmentCounts[dept] = (departmentCounts[dept] || 0) + 1;
+          const deptName = employee.department_name || "Unknown"; 
+          departmentCounts[deptName] = (departmentCounts[deptName] || 0) + 1;
         });
-
-        // অবজেক্টকে অ্যারের মধ্যে কনভার্ট করা
+  
+        
         const departmentArray = Object.entries(departmentCounts).map(
-          ([name, count]) => ({
-            name,
-            count,
-            percentage: Math.min((count / data.length) * 100, 100),
+          ([department_name, count]) => ({
+            department_name,
+            count
           })
         );
-
+  
+        console.log(departmentArray); // কনসোলে আউটপুট দেখুন
         setDepartment(departmentArray);
         setLoading(false);
       } catch (error) {
@@ -78,9 +79,11 @@ const AdminDashboard = () => {
         setLoading(false);
       }
     };
-
+  
     fetchEmployees();
   }, []);
+  
+  
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -411,7 +414,7 @@ const AdminDashboard = () => {
                 {department.map((dept, index) => (
                   <div key={index}>
                     <p className="text-gray-600 font-medium mb-1">
-                      {dept.name}
+                      {dept.department_name}
                     </p>
                     <div className="w-full bg-gray-200 rounded-lg h-4 overflow-hidden">
                       <div
