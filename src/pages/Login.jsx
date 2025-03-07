@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SuccessModal from "../components/SuccessModal";
+import SuccessModal from "../components/modal/SuccessModal";
 import ForgotPasswordModal from "../components/modal/ForgotPasswordModal";
 import OTPVerificationModal from "../components/modal/OTPVerificationModal";
 import ResetPasswordModal from "../components/modal/ResetPasswordModal";

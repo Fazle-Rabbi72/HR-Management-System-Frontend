@@ -1,6 +1,6 @@
 import React from 'react'
 import EmployeeDashboard from './EmployeeDashboard'
-import EmployeeSalary from '../components/EmployeeSalary'
+import EmployeeSalary from '../components/user/EmployeeSalary'
 
 const SalaryDashboard = () => {
   return (

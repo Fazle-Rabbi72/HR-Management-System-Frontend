@@ -102,7 +102,7 @@ const Headers = () => {
       <div className="flex flex-col">
         <h1 className="text-sm text-gray-500">Welcome Back!</h1>
         <p className="text-lg md:text-xl font-semibold text-gray-800">
-          {userData.first_name
+          {role === "employee"
             ? `${userData.first_name} ${userData.last_name}`
             : "Admin"}
         </p>
@@ -119,12 +119,14 @@ const Headers = () => {
             placeholder="Search..."
           />
         </div>
-      ) : (
+      ) : role === "employee" ? (
         <div className="relative w-full mt-4 md:mt-0 md:w-1/3">
           <h1 className="text-lg md:text-xl font-semibold text-gray-800">
             Employee Dashboard
           </h1>
         </div>
+      ) : (
+        <p>Loading...</p>
       )}
 
       <div className="flex items-center gap-4 mt-4 md:mt-0">
@@ -135,9 +137,7 @@ const Headers = () => {
           </span>
         </button>
 
-        <div
-          className="relative"
-        >
+        <div className="relative">
           <img
             className="w-10 h-10 rounded-full border-2 border-indigo-500 hover:shadow-lg cursor-pointer"
             src={
@@ -146,12 +146,12 @@ const Headers = () => {
                 : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             alt="Profile"
-            onClick={toggleDropdown} 
+            onClick={toggleDropdown}
           />
           {dropdownOpen && (
             <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
               <li
-                onClick={()=> navigate("/dashboard/update-profile")}
+                onClick={() => navigate("/dashboard/update-profile")}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               >
                 Profile

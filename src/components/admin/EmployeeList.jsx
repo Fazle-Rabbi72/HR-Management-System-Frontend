@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddEmployeeModal from "./AddEmployeeModal";
+import AddEmployeeModal from "../modal/AdminModal/AddEmployeeModal";
 import { GoPlus, GoSearch } from "react-icons/go";
 import { FaPlus } from "react-icons/fa";
 import EmployeTable from "./EmployeTable";

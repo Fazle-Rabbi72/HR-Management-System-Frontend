@@ -71,7 +71,7 @@ const Department = () => {
   const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
 
   return (
-    <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-lg w-full max-w-4xl mx-auto">
+    <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-lg w-full  mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Department List</h2>
         <button
@@ -85,14 +85,14 @@ const Department = () => {
       {/* Search Input */}
       <input
         type="text"
-        className="w-full border p-2 rounded mb-3"
+        className="w-full shadow shadow-gray-400 p-2 rounded mb-3"
         placeholder="Search department..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       
       {currentDepartments.length > 0 ? (
-        <table className="w-full border border-gray-300 bg-white rounded-lg shadow-md">
+        <table className="w-full shadow-gray-400 bg-white rounded-lg shadow-md">
           <thead className="bg-blue-500 text-white">
             <tr>
               <th className="p-3 text-left">SL No</th>
@@ -102,12 +102,12 @@ const Department = () => {
           </thead>
           <tbody>
             {currentDepartments.map((dept, index) => (
-              <tr key={dept.id} className="border-b hover:bg-gray-100">
+              <tr key={dept.id} className="shadow shadow-gray-100 hover:bg-gray-100">
                 <td className="p-3">{indexOfFirstItem + index + 1}</td>
                 <td className="p-3">{dept.name}</td>
                 <td className="p-3">
                   <button
-                    className="mr-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    className="mr-2 bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                     onClick={() => handleUpdate(dept.id)}
                   >
                     Update

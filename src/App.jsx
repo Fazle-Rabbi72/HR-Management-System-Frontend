@@ -6,15 +6,16 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import SalaryDashboard from "./pages/SalaryDashboard";
-import EmployeeList from "./components/EmployeeList";
-import AdminPayroll from "./components/AdminPayroll";
-import Department from "./components/Department";
+import EmployeeList from "./components/admin/EmployeeList";
+import AdminPayroll from "./components/admin/AdminPayroll";
+import Department from "./components/admin/Department";
 import HolidayCalendar from "./components/HolidayCalendar";
-import AdminLeavDashboard from "./components/AdminLeavDashboard";
-import AdminTask from "./components/AdminTask";
-import EmployeeLeaveDashboard from "./components/EmployeeLeaveDashboard";
-import EmployeeTask from "./components/EmployeeTask";
+import AdminLeavDashboard from "./components/admin/AdminLeavDashboard";
+
+import EmployeeLeaveDashboard from "./components/user/EmployeeLeaveDashboard";
+import EmployeeTask from "./components/user/EmployeeTask";
 import UpdateProfile from "./components/UpdateProfile";
+import AdminTask from "./components/admin/AdminTask";
 
 function App() {
   return (

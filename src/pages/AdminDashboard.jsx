@@ -8,9 +8,9 @@ import {
   Clock,
   UserCheck,
 } from "lucide-react";
-import AttendanceDashboard from "../components/AttendanceDashboard";
-import EmployeeList from "../components/EmployeeList";
-import AdminLeavDashboard from "../components/AdminLeavDashboard";
+import AttendanceDashboard from "../components/admin/AttendanceDashboard";
+import EmployeeList from "../components/admin/EmployeeList";
+import AdminLeavDashboard from "../components/admin/AdminLeavDashboard";
 
 const AdminDashboard = () => {
   const [tab, setTab] = useState("");

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
-import { LuBox, LuUsers, LuMessageSquare, LuCalendar, LuTrello } from "react-icons/lu";
+import { LuBox, LuUsers, LuMessageSquare, LuCalendar } from "react-icons/lu";
 import { FaMoneyBill, FaSuitcase } from "react-icons/fa";
-import { TbUsers } from "react-icons/tb";
+import { FaTasks } from "react-icons/fa"; // Importing an outline icon for Tasks
+import { RiBuilding2Line } from "react-icons/ri";
+import { TbMoneybag } from "react-icons/tb";
+
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
@@ -13,20 +16,76 @@ const SideBar = () => {
   };
   const SIDEBAR_LINKS = [
     { id: 1, path: "/dashboard", name: "Dashboard", icon: <LuBox /> },
-    { id: 2, path: "/dashboard/employee-list", name: "Employees", icon: <LuUsers /> },
-    { id: 3, path: "/dashboard/leave-dashboard", name: "Leaves", icon: <LuMessageSquare /> },
-    { id: 5, path: "/dashboard/task", name: "Tasks", icon: <LuTrello /> },
-    { id: 5, path: "/dashboard/departments", name: "Departments", icon: <LuTrello /> },
-    { id: 5, path: "/dashboard/payroll", name: "Payroll", icon: <FaMoneyBill /> },
-    { id: 6, path: "/dashboard/calendar", name: "Calendar", icon: <LuCalendar /> },
+    {
+      id: 2,
+      path: "/dashboard/employee-list",
+      name: "Employees",
+      icon: <LuUsers />,
+    },
+    {
+      id: 3,
+      path: "/dashboard/leave-dashboard",
+      name: "Leaves",
+      icon: <LuMessageSquare />,
+    },
+
+    { id: 4, 
+      path: "/dashboard/task", 
+      name: "Tasks", 
+      icon: <FaTasks /> 
+    },
+    {
+      id: 5,
+      path: "/dashboard/departments",
+      name: "Departments",
+      icon: <RiBuilding2Line />,
+    },
+
+    {
+      id: 6,
+      path: "/dashboard/payroll",
+      name: "Payroll",
+      icon: <TbMoneybag />,
+    },
+    {
+      id: 7,
+      path: "/dashboard/calendar",
+      name: "Calendar",
+      icon: <LuCalendar />,
+    },
   ];
-  
+
   const SIDEBAR_EMPLOYEE_LINKS = [
-    { id: 1, path: "/dashboard/employee-dashboard", name: "Dashboard", icon: <LuBox /> },
-    { id: 4, path: "/dashboard/employee-leave-dashboard", name: "Leaves", icon: <LuMessageSquare /> },
-    { id: 5, path: "/dashboard/employe-task", name: "Tasks", icon: <FaSuitcase /> },
-    { id: 5, path: "/dashboard/salary-dashboard", name: "Salary", icon: <FaMoneyBill /> },
-    { id: 6, path: "/dashboard/calendar", name: "Calendar", icon: <LuCalendar /> },
+    {
+      id: 1,
+      path: "/dashboard/employee-dashboard",
+      name: "Dashboard",
+      icon: <LuBox />,
+    },
+    {
+      id: 4,
+      path: "/dashboard/employee-leave-dashboard",
+      name: "Leaves",
+      icon: <LuMessageSquare />,
+    },
+    {
+      id: 5,
+      path: "/dashboard/employe-task",
+      name: "Tasks",
+      icon: <FaTasks />,
+    },
+    {
+      id: 5,
+      path: "/dashboard/salary-dashboard",
+      name: "Salary",
+      icon: <FaMoneyBill />,
+    },
+    {
+      id: 6,
+      path: "/dashboard/calendar",
+      name: "Calendar",
+      icon: <LuCalendar />,
+    },
   ];
 
   return (
@@ -68,10 +127,10 @@ const SideBar = () => {
 
               {/* tooltip for hover item */}
               {hoverdItem === index && (
-              <span className="absolute left-16 bg-gray-700 text-white text-xs px-2 py-1 rounded-md shadow-lg md:hidden">
-                {link.name}
-              </span>
-            )}
+                <span className="absolute left-16 bg-gray-700 text-white text-xs px-2 py-1 rounded-md shadow-lg md:hidden">
+                  {link.name}
+                </span>
+              )}
             </li>
           ))}
         </ul>
@@ -100,10 +159,10 @@ const SideBar = () => {
 
               {/* tooltip for hover item */}
               {hoverdItem === index && (
-              <span className="absolute left-16 bg-gray-700 text-white text-xs px-2 py-1 rounded-md shadow-lg md:hidden">
-                {link.name}
-              </span>
-            )}
+                <span className="absolute left-16 bg-gray-700 text-white text-xs px-2 py-1 rounded-md shadow-lg md:hidden">
+                  {link.name}
+                </span>
+              )}
             </li>
           ))}
         </ul>

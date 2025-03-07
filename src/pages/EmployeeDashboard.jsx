@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AttendanceTable from "../components/AttendanceTable";
-import EmployeeLeaveDashboard from "../components/EmployeeLeaveDashboard";
+import AttendanceTable from "../components/user/AttendanceTable";
+import EmployeeLeaveDashboard from "../components/user/EmployeeLeaveDashboard";
 
 const EmployeeDashboard = () => {
   const navigate = useNavigate();

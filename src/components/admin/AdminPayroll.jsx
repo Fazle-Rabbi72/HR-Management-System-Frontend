@@ -179,7 +179,7 @@ const AdminPayroll = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 text-center">Payroll Dashboard</h1>
+      <h1 className="text-2xl font-bold mt-6 mb-4 text-center">Payroll Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Payroll Management */}
         <div className="bg-white p-4 shadow rounded-lg">
@@ -187,7 +187,7 @@ const AdminPayroll = () => {
             <input
               type="number"
               placeholder="Filter by Employee ID"
-              className="border p-2 rounded mb-2 md:mb-0 md:w-1/2"
+              className=" shadow shadow-gray-400 p-2 rounded mb-2 md:mb-0 md:w-1/2"
               onChange={(e) => setFilter(e.target.value)}
             />
             <button
@@ -198,29 +198,32 @@ const AdminPayroll = () => {
             </button>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-gray-300">
-              <thead>
+            <table className="table table-zebra shadow-md ">
+              {/* Table Header */}
+              <thead className="bg-gray-200 text-gray-800">
                 <tr>
-                  <th className="border p-2">Employee</th>
-                  <th className="border p-2">Basic Salary</th>
-                  <th className="border p-2">Deduction</th>
-                  <th className="border p-2">Tax</th>
-                  <th className="border p-2">Bonus</th>
-                  <th className="border p-2">Actions</th>
+                  <th className="p-3">Employee</th>
+                  <th className="p-3">Basic Salary</th>
+                  <th className="p-3">Deduction</th>
+                  <th className="p-3">Tax</th>
+                  <th className="p-3">Bonus</th>
+                  <th className="p-3">Actions</th>
                 </tr>
               </thead>
+
+              {/* Table Body */}
               <tbody>
                 {payrolls.length > 0 ? (
                   payrolls.map((payroll) => (
-                    <tr key={payroll.id}>
-                      <td className="border p-2">{payroll.employee_name}</td>
-                      <td className="border p-2">{payroll.basic_salary}</td>
-                      <td className="border p-2">{payroll.deductions}</td>
-                      <td className="border p-2">{payroll.tax}</td>
-                      <td className="border p-2">{payroll.bonus}</td>
-                      <td className="border p-2 flex gap-2">
+                    <tr key={payroll.id} className="hover">
+                      <td className="p-3">{payroll.employee_name}</td>
+                      <td className="p-3">{payroll.basic_salary}</td>
+                      <td className="p-3">{payroll.deductions}</td>
+                      <td className="p-3">{payroll.tax}</td>
+                      <td className="p-3">{payroll.bonus}</td>
+                      <td className="p-3 flex mt-3 gap-2">
                         <button
-                          className="bg-blue-500 text-white px-3 py-1 rounded"
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm"
                           onClick={() => {
                             setSelectedPayroll(payroll);
                             setShowPayslipModal(true);
@@ -229,7 +232,7 @@ const AdminPayroll = () => {
                           Payslip
                         </button>
                         <button
-                          className="bg-yellow-500 text-white px-3 py-1 rounded"
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm"
                           onClick={() => {
                             setSelectedPayroll(payroll);
                             setShowUpdateModal(true);
@@ -238,7 +241,7 @@ const AdminPayroll = () => {
                           Update
                         </button>
                         <button
-                          className="bg-red-500 text-white px-3 py-1 rounded"
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
                           onClick={() => handleDeletePayroll(payroll.id)}
                         >
                           Delete
@@ -248,7 +251,7 @@ const AdminPayroll = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="text-center p-4">
+                    <td colSpan="6" className="text-center p-4 text-gray-500">
                       No payroll data available
                     </td>
                   </tr>
@@ -262,7 +265,7 @@ const AdminPayroll = () => {
         <div className="bg-white p-4 shadow rounded-lg">
           <div className="flex justify-between mb-4">
             <select
-              className="border p-2 rounded"
+              className="shadow shadow-gray-400 p-2 rounded"
               onChange={(e) => setPaidFilter(e.target.value)}
             >
               <option value="">All</option>
@@ -271,34 +274,40 @@ const AdminPayroll = () => {
             </select>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-gray-300">
-              <thead>
+            <table className="table table-zebra w-full table-auto shadow-md ">
+              {/* Table Header */}
+              <thead className="bg-gray-200 text-gray-800">
                 <tr>
-                  <th className="border p-2">Employee</th>
-                  <th className="border p-2">Net Salary</th>
-                  <th className="border p-2">Paid Status</th>
+                  <th className="p-3">Employee</th>
+                  <th className="p-3">Net Salary</th>
+                  <th className="p-3">Paid Status</th>
                 </tr>
               </thead>
+
+              {/* Table Body */}
               <tbody>
                 {payslips
                   .filter((item) =>
                     paidFilter ? item.paid.toString() === paidFilter : true
                   )
                   .map((payslip) => (
-                    <tr key={payslip.id}>
-                      <td className="border p-2">{payslip.employee_name}</td>
-                      <td className="border p-2">{payslip.net_salary}</td>
-                      <td className="border p-2">
+                    <tr
+                      key={payslip.id}
+                      className="hover:bg-gray-100 transition"
+                    >
+                      <td className="p-3">{payslip.employee_name}</td>
+                      <td className="p-3">{payslip.net_salary}</td>
+                      <td className="p-3">
                         <button
                           onClick={() =>
                             handleTogglePaidStatus(payslip.id, payslip.paid)
                           }
-                          className={
+                          className={`btn btn-sm text-white font-bold px-4 py-2 rounded ${
                             payslip.paid
-                              ? "bg-green-500 text-white px-3 py-1 rounded cursor-not-allowed"
-                              : "bg-red-500 text-white px-3 py-1 rounded hover:cursor-pointer"
-                          }
-                          disabled={payslip.paid} // Disable the button if it's already paid
+                              ? "bg-green-600 hover:bg-green-700 cursor-not-allowed"
+                              : "bg-red-600 hover:bg-red-700"
+                          }`}
+                          disabled={payslip.paid}
                         >
                           {payslip.paid ? "Paid" : "Unpaid"}
                         </button>
