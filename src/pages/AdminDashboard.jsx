@@ -55,23 +55,26 @@ const AdminDashboard = () => {
         }
         const data = await response.json();
         console.log(data);
-  
-       
+
+      
+        const totalEmployees = data.length;
+
         const departmentCounts = {};
         data.forEach((employee) => {
-          const deptName = employee.department_name || "Unknown"; 
+          const deptName = employee.department_name || "Unknown";
           departmentCounts[deptName] = (departmentCounts[deptName] || 0) + 1;
         });
-  
-        
+
+   
         const departmentArray = Object.entries(departmentCounts).map(
           ([department_name, count]) => ({
             department_name,
-            count
+            count,
+            percentage: ((count / totalEmployees) * 100).toFixed(2), 
           })
         );
-  
-        console.log(departmentArray); // কনসোলে আউটপুট দেখুন
+
+       
         setDepartment(departmentArray);
         setLoading(false);
       } catch (error) {
@@ -79,11 +82,9 @@ const AdminDashboard = () => {
         setLoading(false);
       }
     };
-  
+
     fetchEmployees();
   }, []);
-  
-  
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -414,12 +415,17 @@ const AdminDashboard = () => {
                 {department.map((dept, index) => (
                   <div key={index}>
                     <p className="text-gray-600 font-medium mb-1">
-                      {dept.department_name}
+                      {dept.department_name} (
+                      <span className="font-bold text-gray-800">
+                        {dept.count}
+                      </span>{" "}
+                      Employees)
                     </p>
                     <div className="w-full bg-gray-200 rounded-lg h-4 overflow-hidden">
                       <div
                         className="h-full bg-orange-500"
                         style={{ width: `${dept.percentage}%` }}
+                        title={`${dept.count} Employees`}
                       ></div>
                     </div>
                   </div>
