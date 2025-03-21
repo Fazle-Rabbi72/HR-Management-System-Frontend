@@ -10,7 +10,6 @@ import ResetPasswordModal from "../components/modal/ResetPasswordModal";
 const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,7 +37,6 @@ const Login = () => {
       );
       const { token, user_id, username, role } = response.data;
 
-      // Store token and user details
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", user_id);
       localStorage.setItem("username", username);
@@ -47,7 +45,6 @@ const Login = () => {
       setError("");
       setIsModalOpen(true);
 
-      // Navigate based on user role after a short delay
       setTimeout(() => {
         if (role === "admin") {
           navigate("/dashboard");
@@ -78,10 +75,7 @@ const Login = () => {
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="usernameOrEmail"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="usernameOrEmail" className="block text-sm font-medium text-gray-700">
                 Username or Email
               </label>
               <input
@@ -95,10 +89,7 @@ const Login = () => {
               />
             </div>
             <div className="relative">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <input
@@ -138,22 +129,36 @@ const Login = () => {
             </p>
             <hr />
             <p className="border-2 border-dashed border-gray-500 p-4 text-center text-gray-700 font-semibold">
-              Username: admin, password: 123<br />
-              Username: fazle_rabbi, password: fazle1234
+              <span
+                className="cursor-pointer text-blue-600 hover:underline"
+                onClick={() => {
+                  setUsernameOrEmail("admin");
+                  setPassword("123");
+                }}
+              >
+                Username: admin, password: 123
+              </span>
+              <br />
+              <span
+                className="cursor-pointer text-blue-600 hover:underline"
+                onClick={() => {
+                  setUsernameOrEmail("fazle_rabbi");
+                  setPassword("fazle1234");
+                }}
+              >
+                Username: fazle_rabbi, password: fazle1234
+              </span>
             </p>
           </form>
         </div>
       </div>
-      <SuccessModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <SuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <ForgotPasswordModal
         isOpen={isForgotPasswordModalOpen}
         onClose={() => setIsForgotPasswordModalOpen(false)}
         onSuccess={(email) => {
           setEmail(email);
-          setIsOTPVerificationModalOpen(true); // Open OTP verification modal
+          setIsOTPVerificationModalOpen(true);
         }}
       />
       <OTPVerificationModal
@@ -162,7 +167,7 @@ const Login = () => {
         email={email}
         onSuccess={(otp) => {
           setOtp(otp);
-          setIsResetPasswordModalOpen(true); // Open reset password modal
+          setIsResetPasswordModalOpen(true);
         }}
       />
       <ResetPasswordModal
