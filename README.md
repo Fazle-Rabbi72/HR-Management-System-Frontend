@@ -5,7 +5,7 @@ I'm thrilled to share my latest project: **HR Management System**, a **full-stac
 ## 🌐 Project Links  
 
 - **Backend Live Site:** [HR Management Backend](https://hr-management-system-liard.vercel.app/)   
-- **Live Site:** [HR Management Live](https://hr-management-app.vercel.app)  
+- **Live Site:** [HR Management Live](https://hr-management-system23.netlify.app/)  
 
 ## 🔹 Key Features  
 
