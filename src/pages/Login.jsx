@@ -136,7 +136,7 @@ const Login = () => {
                   setPassword("123");
                 }}
               >
-                Username: admin, password: 123
+                Admin: abid, password: fazle1234
               </span>
               <br />
               <span
