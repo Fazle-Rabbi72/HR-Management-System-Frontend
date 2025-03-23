@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SideBar from "./SideBar";
 import Headers from "./Headers";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -6,22 +6,26 @@ import { Outlet, useNavigate } from "react-router-dom";
 const Layout = () => {
   const navigate = useNavigate();
 
-  if (localStorage.getItem("token")) {
-    return (
-      <div>
-        <div className="flex">
-          <SideBar />
-          <div className="w-full ml-16 md:ml-56">
-            <Headers />
-            <Outlet />
-          </div>
+  const isAuthenticated = () => {
+    return localStorage.getItem("token") !== null;
+  };
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
+
+  return (
+    <div>
+      <div className="flex">
+        <SideBar />
+        <div className="w-full ml-16 md:ml-56">
+          <Headers />
+          <Outlet />
         </div>
       </div>
-    );
-  } 
-  else {
-    navigate("/");
-  }
+    </div>
+  );
 };
 
 export default Layout;

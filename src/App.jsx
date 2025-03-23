@@ -16,6 +16,8 @@ import EmployeeLeaveDashboard from "./components/user/EmployeeLeaveDashboard";
 import EmployeeTask from "./components/user/EmployeeTask";
 import UpdateProfile from "./components/UpdateProfile";
 import AdminTask from "./components/admin/AdminTask";
+import ProtectedRoute from "./utils/ProtectedRoute";
+import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
   return (
@@ -23,22 +25,30 @@ function App() {
       <Routes>
         {/* Public Route */}
         <Route path="/" element={<Login />} />
-        
-        {/* Protected Routes with Layout */}
+
+        {/* Common Protected Route with Layout */}
         <Route path="/dashboard" element={<Layout />}>
-          {/* Default Route for Layout */}
-          <Route index element={<AdminDashboard />} />
-          <Route path="employee-dashboard" element={<EmployeeDashboard />} />
-          <Route path="salary-dashboard" element={<SalaryDashboard />} />
-          <Route path="employee-list" element={<EmployeeList/>}/>
-          <Route path="payroll" element={<AdminPayroll/>}/>
-          <Route path="departments" element={<Department/>}/>
-          <Route path="calendar" element={<HolidayCalendar/>}/>
-          <Route path="leave-dashboard" element={<AdminLeavDashboard/>}/>
-          <Route path="task" element={<AdminTask/>}/>
-          <Route path="employee-leave-dashboard" element={<EmployeeLeaveDashboard/>}/>
-          <Route path="employe-task" element={<EmployeeTask/>}/>
-          <Route path="update-profile" element={<UpdateProfile/>}/>
+          {/* Holiday Calendar Accessible by Both Admin and Employee */}
+          <Route path="calendar" element={<PrivateRoute><HolidayCalendar /></PrivateRoute>} />
+
+          {/* Protected Routes for Admin */}
+          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+            <Route index element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
+            <Route path="employee-list" element={<PrivateRoute><EmployeeList /></PrivateRoute>} />
+            <Route path="payroll" element={<PrivateRoute><AdminPayroll /></PrivateRoute>} />
+            <Route path="departments" element={<PrivateRoute><Department /></PrivateRoute>} />
+            <Route path="leave-dashboard" element={<PrivateRoute><AdminLeavDashboard /></PrivateRoute>} />
+            <Route path="task" element={<PrivateRoute><AdminTask /></PrivateRoute>} />
+          </Route>
+
+          {/* Protected Routes for Employee */}
+          <Route element={<ProtectedRoute allowedRoles={["employee"]} />}>
+            <Route path="employee-dashboard" element={<PrivateRoute><EmployeeDashboard /></PrivateRoute>} />
+            <Route path="salary-dashboard" element={<PrivateRoute><SalaryDashboard /></PrivateRoute>} />
+            <Route path="employee-leave-dashboard" element={<PrivateRoute><EmployeeLeaveDashboard /></PrivateRoute>} />
+            <Route path="employe-task" element={<PrivateRoute><EmployeeTask /></PrivateRoute>} />
+            <Route path="update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -102,9 +102,7 @@ const Headers = () => {
       <div className="flex flex-col">
         <h1 className="text-sm text-gray-500">Welcome Back!</h1>
         <p className="text-lg md:text-xl font-semibold text-gray-800">
-          {role === "employee"
-            ? `${userData.first_name} ${userData.last_name}`
-            : "Admin"}
+          {userData.first_name} {userData.last_name}
         </p>
       </div>
 
