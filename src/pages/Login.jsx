@@ -132,11 +132,11 @@ const Login = () => {
               <span
                 className="cursor-pointer text-blue-600 hover:underline"
                 onClick={() => {
-                  setUsernameOrEmail("admin");
-                  setPassword("123");
+                  setUsernameOrEmail("abid");
+                  setPassword("fazle1234");
                 }}
               >
-                Admin: abid, password: fazle1234
+                Admin
               </span>
               <br />
               <span
@@ -146,7 +146,7 @@ const Login = () => {
                   setPassword("fazle1234");
                 }}
               >
-                Username: fazle_rabbi, password: fazle1234
+                Employee
               </span>
             </p>
           </form>
