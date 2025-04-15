@@ -30,6 +30,7 @@ function App() {
         <Route path="/dashboard" element={<Layout />}>
           {/* Holiday Calendar Accessible by Both Admin and Employee */}
           <Route path="calendar" element={<PrivateRoute><HolidayCalendar /></PrivateRoute>} />
+          <Route path="update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />
 
           {/* Protected Routes for Admin */}
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
@@ -47,7 +48,6 @@ function App() {
             <Route path="salary-dashboard" element={<PrivateRoute><SalaryDashboard /></PrivateRoute>} />
             <Route path="employee-leave-dashboard" element={<PrivateRoute><EmployeeLeaveDashboard /></PrivateRoute>} />
             <Route path="employe-task" element={<PrivateRoute><EmployeeTask /></PrivateRoute>} />
-            <Route path="update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />
           </Route>
         </Route>
       </Routes>
